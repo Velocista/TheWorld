@@ -1,0 +1,89 @@
+﻿/* site.css */
+
+body {
+    font-family: sans-serif;
+    font-size: 14px;
+    margin: 0; /* default all the margins to 0*/
+}
+
+label {
+    font-weight: bold;
+    display: block;
+}
+
+input[type=text], input[type=password], textarea {
+    width: auto;
+}
+
+#main {
+    background-color: #eee;
+    padding: 4px;
+    margin: 0;
+}
+
+#footer {
+    background-color: #222;
+    color: #eee;
+    padding: 8px 5px;
+    position: fixed; /* Fix position to 0 from the bottom*/
+    bottom: 0;
+    width: 100%;
+}
+
+.headshot {
+    max-width: 50px;
+    border: 1px solid #222;
+    padding: 3px;
+}
+
+.menu {
+    font-size: 12px;
+}
+
+    .menu li {
+        list-style-type: none;
+    }
+
+        .active {
+            font-weight: bold;
+        }
+
+#sidebar {
+    background: #2a2c36;
+    color: #eee;
+    position: fixed; /* fixed is to set position in a specific location, this is married with left: 0 */
+    height: 100%; /* 100% another unit type, but is saying the side bar will take entire vertical space of the page */
+    width: 250px; /* Width of page is 250 px from the left of the page */
+    overflow: hidden; /* Any content which surpasses the 250 px width will be clipped an unseen  */
+    left: 0; /* 0 means it will be on the left hand of the page */
+    margin: 0;
+    -moz-transition: left ease .25s;
+    -o-transition: left ease .25s;
+    -webkit-transition: left ease .25s;
+    transition: left ease .25s;
+}
+
+    #sidebar.hide-sidebar {
+        left: -250px;
+        -moz-transition: left ease .25s;
+        -o-transition: left ease .25s;
+        -webkit-transition: left ease .25s;
+        transition: left ease .25s;
+    }
+
+
+#wrapper {
+    margin: 0 0 0 250px;
+    -moz-transition: margin-left ease .25s;
+    -o-transition: margin-left ease .25s;
+    -webkit-transition: margin-left ease .25s;
+    transition: margin-left ease .25s;
+}
+
+    #wrapper.hide-sidebar {
+        margin-left: 0;
+        -moz-transition: margin-left ease .25s;
+        -o-transition: margin-left ease .25s;
+        -webkit-transition: margin-left ease .25s;
+        transition: margin-left ease .25s;
+    }
