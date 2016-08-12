@@ -44,9 +44,9 @@ input[type=text], input[type=password], textarea {
         list-style-type: none;
     }
 
-        .active {
-            font-weight: bold;
-        }
+.active {
+    font-weight: bold;
+}
 
 #sidebar {
     background: #2a2c36;
