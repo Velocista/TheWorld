@@ -1,5 +1,9 @@
 {
   "MailSettings": {
     "ToAddress": "anselmo.rossiello@outlook.com"
+  },
+  "ConnectionString": {
+    "WorldContextConnection": "server=(localdb)\\MSSQLLocalDB;Database=TheWorldDb;Trusted_Connection=True;MultipleActiveResultSets=true;"
   }
+
 }
