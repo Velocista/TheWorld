@@ -29,14 +29,17 @@
 
     //This will return a wrapped set of elements with the below selector as the "," acts as an "and" operator
     var $sidebarAndWrapper = $("#sidebar,#wrapper");
+    var $icon = $("#sidebarToggle i.fa");
 
     $("#sidebarToggle").on("click", function () {
         $sidebarAndWrapper.toggleClass("hide-sidebar");  //Adds a class if doesn't exist or removes a class if it does exist
 
         if ($sidebarAndWrapper.hasClass("hide-sidebar")) {
-            $(this).text("Show Sidebar");
+            $icon.removeClass("fa-angle-left");
+            $icon.addClass("fa-angle-right");
         } else {
-            $(this).text("Hide Sidebar");
+            $icon.addClass("fa-angle-left");
+            $icon.removeClass("fa-angle-right");
         }
 
     });
