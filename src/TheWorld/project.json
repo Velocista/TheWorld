@@ -17,7 +17,9 @@
     "Microsoft.EntityFrameworkCore.Tools": {
       "version": "1.0.0-preview2-final",
       "type": "build"
-    }
+    },
+    "Microsoft.Extensions.Logging.Debug": "1.0.0",
+    "AutoMapper": "5.1.1"
   },
 
   "tools": {
@@ -26,12 +28,12 @@
       "imports": "portable-net45+win8+dnxcore50"
     },
     "Microsoft.EntityFrameworkCore.Tools": {
-      "version": "1.0.0-preview2-final",
-      "imports": [
-        "portable-net45+win8+dnxcore50",
-        "portable-net451+win8"
-      ]
-    }
+        "version": "1.0.0-preview2-final",
+        "imports": [
+          "portable-net45+win8+dnxcore50",
+          "portable-net451+win8"
+        ]
+      }
     },
 
     "frameworks": {

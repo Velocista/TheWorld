@@ -10,6 +10,9 @@ using Microsoft.Extensions.Logging;
 using TheWorld.Services;
 using Microsoft.Extensions.Configuration;
 using TheWorld.Models;
+using Newtonsoft.Json.Serialization;
+using AutoMapper;
+using TheWorld.ViewModels;
 
 namespace TheWorld
 {
@@ -51,7 +54,13 @@ namespace TheWorld
 
             services.AddTransient<WorldContextSeedData>();
 
-            services.AddMvc();
+            services.AddLogging();
+
+            services.AddMvc()
+                .AddJsonOptions(config =>
+                {
+                    config.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                });
 
         }
 
@@ -61,9 +70,20 @@ namespace TheWorld
             ILoggerFactory loggerFactor,
             WorldContextSeedData seeder)
         {
+            Mapper.Initialize(config =>
+            {
+                config.CreateMap<TripViewModel, Trip>().ReverseMap();
+                config.CreateMap<StopsViewModel, Stop>().ReverseMap();
+            });
+
             if (env.IsEnvironment("Development"))  //Same as env.IsDevelopment()
             {
                 app.UseDeveloperExceptionPage();
+                loggerFactor.AddDebug(LogLevel.Information);
+            }
+            else
+            {
+                loggerFactor.AddDebug(LogLevel.Error);
             }
 
             app.UseStaticFiles();
@@ -77,18 +97,6 @@ namespace TheWorld
             });
 
             seeder.EnsureSeedData().Wait();
-
-            //loggerFactory.AddConsole();
-
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
-
-            //app.Run(async (context) =>
-            //{
-            //    await context.Response.WriteAsync("Hello World!");
-            //});
         }
     }
 }

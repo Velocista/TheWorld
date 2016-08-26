@@ -1,9 +1,10 @@
 ﻿@model IEnumerable<TheWorld.Models.Trip>
-@{ 
+@{
     ViewBag.Title = "Home Page";
 }
 
-<div class="row"> <!--Container for making grid decisions inside of, so not really a row-->
+<div class="row">
+    <!--Container for making grid decisions inside of, so not really a row-->
     <div class="col-md-6 col-xs-8">
         <h3>The World</h3>
         <p>This will be fun.</p>
@@ -22,4 +23,10 @@
     <div class="col-md-6 col-xs-8">
         <h2>The Map</h2>
     </div>
+    <ul>
+        @foreach (var item in Model)
+        {
+            <li>@item.Name : @item.DateCreated.ToString("d")</li>
+        }
+    </ul>
 </div>

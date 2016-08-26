@@ -17,9 +17,9 @@ namespace TheWorld.Models
 
         public async Task EnsureSeedData()
         {
-            if (_context.Trips.Any())
+            if (!_context.Trips.Any())
             {
-                var usTrip = new Trip()
+                 var usTrip = new Trip()
                 {
                     DateCreated = DateTime.UtcNow,
                     Name = "US Trip",
