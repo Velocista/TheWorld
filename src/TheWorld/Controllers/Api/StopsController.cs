@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TheWorld.Models;
+using TheWorld.Services;
 using TheWorld.ViewModels;
 
 namespace TheWorld.Controllers.Api
@@ -14,14 +15,17 @@ namespace TheWorld.Controllers.Api
     [Route("/api/trips/{tripName}/stops")]
     public class StopsController : Controller
     {
+        private GeoCoordsService _coordsService;
         private ILogger<StopsController> _logger;
         private IWorldRepository _repository;
 
         public StopsController(IWorldRepository repository,
-            ILogger<StopsController> logger)
+            ILogger<StopsController> logger,
+            GeoCoordsService coordsService)
         {
             _repository = repository;
             _logger = logger;
+            _coordsService = coordsService;
         }
 
         public IActionResult Get(string tripName)
@@ -50,14 +54,26 @@ namespace TheWorld.Controllers.Api
                     var newStop = Mapper.Map<Stop>(vm);
 
                     //Lookup geo points
+                    var result = await _coordsService.GetCoordsAsync(newStop.Name);
 
-                    //Save to the DB
-                    _repository.AddStop(tripName, newStop);
-
-                    if (await _repository.SaveChangesAsync())
+                    if (!result.Success)
                     {
-                        return Created($"api/trips/{tripName}/stops/{newStop.Name}",
-                            Mapper.Map<StopsViewModel>(newStop));
+                        _logger.LogError(result.Message);
+                    }
+                    else
+                    {
+                        newStop.Latitude = result.Latitude;
+                        newStop.Longitude = result.Longitude;
+
+
+                        //Save to the DB
+                        _repository.AddStop(tripName, newStop);
+
+                        if (await _repository.SaveChangesAsync())
+                        {
+                            return Created($"api/trips/{tripName}/stops/{newStop.Name}",
+                                Mapper.Map<StopsViewModel>(newStop));
+                        }
                     }
                 }
             }
