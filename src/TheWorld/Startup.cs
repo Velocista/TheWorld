@@ -13,6 +13,8 @@ using TheWorld.Models;
 using Newtonsoft.Json.Serialization;
 using AutoMapper;
 using TheWorld.ViewModels;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TheWorld
 {
@@ -48,6 +50,15 @@ namespace TheWorld
                 //Implement a real mail service
             }
 
+            services.AddIdentity<WorldUser, IdentityRole>(config =>
+            {
+                //Where to configure requirements for Identity
+                config.User.RequireUniqueEmail = true;
+                config.Password.RequiredLength = 8;
+                config.Cookies.ApplicationCookie.LoginPath = "/Auth/Login";
+            })
+            .AddEntityFrameworkStores<WorldContext>();  //Configures where the identities are stored
+
             services.AddDbContext<WorldContext>();
 
             services.AddScoped<IWorldRepository, WorldRepository>();
@@ -58,11 +69,17 @@ namespace TheWorld
 
             services.AddLogging();
 
-            services.AddMvc()
-                .AddJsonOptions(config =>
+            services.AddMvc(config =>
+            {
+                if (_env.IsProduction())
                 {
-                    config.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                });
+                    config.Filters.Add(new RequireHttpsAttribute());
+                }
+            })
+            .AddJsonOptions(config =>
+            {
+                config.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            });
 
         }
 
@@ -72,6 +89,8 @@ namespace TheWorld
             ILoggerFactory loggerFactor,
             WorldContextSeedData seeder)
         {
+            //Ordered in the ways execution is handled
+
             Mapper.Initialize(config =>
             {
                 config.CreateMap<TripViewModel, Trip>().ReverseMap();
@@ -89,6 +108,8 @@ namespace TheWorld
             }
 
             app.UseStaticFiles();
+
+            app.UseIdentity();
 
             app.UseMvc(config => {
                 config.MapRoute(
