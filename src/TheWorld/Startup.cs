@@ -15,6 +15,7 @@ using AutoMapper;
 using TheWorld.ViewModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace TheWorld
 {
@@ -56,6 +57,32 @@ namespace TheWorld
                 config.User.RequireUniqueEmail = true;
                 config.Password.RequiredLength = 8;
                 config.Cookies.ApplicationCookie.LoginPath = "/Auth/Login";
+                config.Cookies.ApplicationCookie.Events = new CookieAuthenticationEvents()
+                {
+                    OnRedirectToLogin = async ctx =>
+                    {
+                        //Test if the request is for an api, to check if the URI path begins with "/api", with StartsWithSegments
+                        //that breaks up the path into segments and is effectively looking for "/" to prevent false postives
+                        if(ctx.Request.Path.StartsWithSegments("/api") &&
+                            //We only want to respond to API requests, which have a status of 200 only and not affect 
+                            //other types of status codes such as a 302 for redirection or a 500 because of an error
+                            //We only want to look at Redirects to Login to send back a 401
+                            ctx.Response.StatusCode == 200 )  
+                        {
+                            ctx.Response.StatusCode = 401;
+                        }
+                        else
+                        {
+                            //We are taking responsibilty to redirect on logins, so we must manage the redirect manually here
+                            ctx.Response.Redirect(ctx.RedirectUri);
+                        }
+
+                        //Let the task complete with Yield, 
+                        //but really doing this to allow the Lambda to be sync, 
+                        //because it is expected for the Lambda
+                        await Task.Yield();
+                    }
+                };
             })
             .AddEntityFrameworkStores<WorldContext>();  //Configures where the identities are stored
 
