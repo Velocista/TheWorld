@@ -5,6 +5,6 @@
 
     //This defines the module because of the dependency parameter of type array []
     //thus this is creating the Module
-    angular.module("app-trips", []);
+    angular.module("app-trips", ["simpleControls"]);
 
 })();
