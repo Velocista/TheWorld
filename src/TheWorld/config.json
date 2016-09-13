@@ -6,7 +6,8 @@
     "WorldContextConnection": "server=(localdb)\\MSSQLLocalDB;Database=TheWorldDb;Trusted_Connection=True;MultipleActiveResultSets=true;"
   },
   "Keys": {
-    "BingKey": ""
+    "BingKey": "",
+    "GoogleMapKey" : ""
   }
 
 }

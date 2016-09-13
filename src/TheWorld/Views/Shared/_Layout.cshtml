@@ -12,7 +12,7 @@
     <div id="sidebar">
         @if (User.Identity.IsAuthenticated)
         {
-        <img src="~/img/chewie.gif" />
+        @*<img src="~/img/chewie.gif" />*@
         <span id="username">@User.Identity.Name</span>
         }
         <ul class="nav">
@@ -68,7 +68,7 @@
     <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="~/js/site.js">
     </script>
-    @RenderSection("scripts", false);
+    @RenderSection("scripts", false)
 
 </body>
 </html>
