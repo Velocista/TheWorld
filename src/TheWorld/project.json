@@ -18,8 +18,8 @@
     "Microsoft.Extensions.Logging.Console": "1.0.0",
     "Microsoft.Extensions.Logging.Debug": "1.0.0",
     "Microsoft.NETCore.App": {
-      "version": "1.0.0",
-      "type": "platform"
+      "version": "1.0.0"
+      //,"type": "platform"
     }
   },
 
@@ -57,14 +57,22 @@
       }
     },
 
+    "runtimes": {
+      "win7-x64": { }
+    },
+
     "publishOptions": {
       "include": [
         "wwwroot",
-        "web.config"
+        "web.config",
+        "Views",
+        "config.json"
       ]
     },
 
-    "scripts": {
+  "scripts": {
+      "prepublish": [ "npm install", "bower install" ],
+      "prepare": "gulp minify",
       "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
     }
   }
